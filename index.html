@@ -1,97 +1,364 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proyecto Cloudflare WAF</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="DevConRLTech: desarrollo de software, tecnología y ciberseguridad.">
+  <meta name="theme-color" content="#090d1c">
+  <title>DevConRLTech | Tecnología y Ciberseguridad</title>
+  <style>
+    :root {
+      --bg: #090d1c;
+      --panel: #111a35;
+      --purple: #818cf8;
+      --violet: #c4b5fd;
+      --white: #f8fafc;
+      --muted: #a5b4fc;
+      --border: #292f59;
+    }
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            background: #f4f6f8;
-            color: #222;
-        }
+    * { box-sizing: border-box; }
 
-        header {
-            background: #1f2937;
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
+    html { scroll-behavior: smooth; }
 
-        main {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 20px;
-        }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, sans-serif;
+      color: var(--white);
+      background:
+        radial-gradient(ellipse at 85% 5%, #30205c 0, transparent 35%),
+        var(--bg);
+      line-height: 1.7;
+    }
 
-        section {
-            background: white;
-            padding: 25px;
-            margin-bottom: 20px;
-            border-radius: 10px;
-        }
+    a { color: inherit; text-decoration: none; }
 
-        a {
-            display: inline-block;
-            margin-top: 10px;
-            padding: 10px 15px;
-            background: #2563eb;
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-        }
+    .container {
+      width: min(1100px, 90%);
+      margin: auto;
+    }
 
-        footer {
-            text-align: center;
-            padding: 20px;
-            color: #666;
-        }
-    </style>
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: #090d1cf2;
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+    }
+
+    nav {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.1rem;
+      font-weight: 800;
+    }
+
+    .logo {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #4338ca, #7c3aed);
+      box-shadow: 0 0 22px #6366f144;
+    }
+
+    .brand small {
+      display: block;
+      color: var(--muted);
+      font-size: .62rem;
+      letter-spacing: 1.5px;
+    }
+
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      font-size: .9rem;
+      color: #c7d2fe;
+    }
+
+    .nav-links a:hover { color: white; }
+
+    .hero { padding: 105px 0 90px; }
+
+    .eyebrow {
+      color: var(--violet);
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      font-size: .78rem;
+      font-weight: 700;
+    }
+
+    h1 {
+      max-width: 850px;
+      margin: 18px 0;
+      font-size: clamp(2.5rem, 7vw, 5rem);
+      line-height: 1.08;
+      letter-spacing: -2px;
+    }
+
+    h1 span {
+      color: var(--violet);
+      text-shadow: 0 0 35px #818cf844;
+    }
+
+    .intro {
+      max-width: 650px;
+      color: #c7d2fe;
+      font-size: 1.1rem;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 30px;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 12px 19px;
+      border-radius: 10px;
+      border: 1px solid var(--purple);
+      font-weight: 650;
+    }
+
+    .button.primary {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      border-color: transparent;
+    }
+
+    .button:hover { transform: translateY(-2px); }
+
+    section { padding: 72px 0; }
+
+    .section-heading { margin-bottom: 30px; }
+
+    .section-heading h2 {
+      font-size: clamp(1.8rem, 4vw, 2.7rem);
+      margin: 5px 0;
+    }
+
+    .section-heading p, .muted { color: #a5b4fc; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      padding: 25px;
+      background: linear-gradient(145deg, #151d3b, #0e142a);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      transition: transform .2s, border-color .2s;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: var(--purple);
+    }
+
+    .symbol {
+      color: var(--violet);
+      font-size: 1.7rem;
+    }
+
+    .card h3 { margin: 8px 0; }
+
+    .tag {
+      display: inline-block;
+      padding: 4px 9px;
+      margin: 4px 4px 0 0;
+      border-radius: 20px;
+      background: #312e814d;
+      border: 1px solid #4f46e5;
+      color: #ddd6fe;
+      font-size: .76rem;
+    }
+
+    .security-panel {
+      padding: 32px;
+      border: 1px solid #6366f188;
+      border-radius: 18px;
+      background: linear-gradient(120deg, #1e1b4b99, #111a35);
+    }
+
+    footer {
+      padding: 28px 0;
+      border-top: 1px solid var(--border);
+      color: #a5b4fc;
+      font-size: .88rem;
+    }
+
+    .footer-content {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    @media (max-width: 700px) {
+      nav { align-items: flex-start; flex-direction: column; padding: 16px 0; }
+      .nav-links { gap: 12px; }
+      .hero { padding: 72px 0 55px; }
+      .grid { grid-template-columns: 1fr; }
+      section { padding: 50px 0; }
+      .security-panel { padding: 22px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
 </head>
-
 <body>
+  <header>
+    <nav class="container" aria-label="Navegación principal">
+      <a class="brand" href="#inicio">
+        <span class="logo" aria-hidden="true">D</span>
+        <span>DevConRLTech
+          <small>TECHNOLOGY · DEVELOPMENT · SECURITY</small>
+        </span>
+      </a>
+      <div class="nav-links">
+        <a href="#inicio">Inicio</a>
+        <a href="#servicios">Servicios</a>
+        <a href="#proyectos">Proyectos</a>
+        <a href="#seguridad">Seguridad</a>
+        <a href="#contacto">Contacto</a>
+      </div>
+    </nav>
+  </header>
 
-<header>
-    <h1>Proyecto Cloudflare WAF</h1>
-    <p>Página web de prueba para implementación de seguridad</p>
-</header>
-
-<main>
-
-    <section>
-        <h2>Bienvenido</h2>
-        <p>
-            Esta página forma parte de una práctica académica
-            sobre Web Application Firewall utilizando Cloudflare.
-        </p>
+  <main>
+    <section class="hero container" id="inicio">
+      <div class="eyebrow">Portafolio tecnológico · Guatemala</div>
+      <h1>Tecnología, desarrollo y <span>ciberseguridad.</span></h1>
+      <p class="intro">
+        Explorando ideas y construyendo soluciones digitales con enfoque
+        en desarrollo de software, infraestructura tecnológica y seguridad.
+      </p>
+      <div class="actions">
+        <a class="button primary" href="#proyectos">Explorar proyectos ↗</a>
+        <a class="button" href="#seguridad">Conocer la práctica WAF</a>
+      </div>
     </section>
 
-    <section>
-        <h2>Objetivo</h2>
-        <p>
-            Implementar medidas de seguridad para proteger una
-            aplicación web frente a solicitudes potencialmente
-            maliciosas o no autorizadas.
-        </p>
+    <section class="container" id="servicios">
+      <div class="section-heading">
+        <div class="eyebrow">Áreas de interés</div>
+        <h2>Soluciones tecnológicas</h2>
+        <p>Conocimientos y áreas de trabajo para proyectos actuales y futuros.</p>
+      </div>
+      <div class="grid">
+        <article class="card">
+          <div class="symbol" aria-hidden="true">&lt;/&gt;</div>
+          <h3>Desarrollo de software</h3>
+          <p class="muted">Diseño y construcción de aplicaciones web y sistemas de información.</p>
+          <span class="tag">Desarrollo web</span><span class="tag">Aplicaciones</span>
+        </article>
+        <article class="card">
+          <div class="symbol" aria-hidden="true">⬡</div>
+          <h3>Ciberseguridad</h3>
+          <p class="muted">Protección de aplicaciones, controles de acceso y pruebas de seguridad autorizadas.</p>
+          <span class="tag">WAF</span><span class="tag">Seguridad web</span>
+        </article>
+        <article class="card">
+          <div class="symbol" aria-hidden="true">⌘</div>
+          <h3>Redes e infraestructura</h3>
+          <p class="muted">Configuración, conectividad, servicios de red y entornos en la nube.</p>
+          <span class="tag">Redes</span><span class="tag">Cloud</span>
+        </article>
+        <article class="card">
+          <div class="symbol" aria-hidden="true">▤</div>
+          <h3>Sistemas y datos</h3>
+          <p class="muted">Modelado de información, bases de datos y automatización de procesos.</p>
+          <span class="tag">SQL</span><span class="tag">Sistemas</span>
+        </article>
+      </div>
     </section>
 
-    <section>
-        <h2>Área administrativa</h2>
-        <p>
-            Esta sección será utilizada posteriormente para
-            realizar pruebas de las reglas de seguridad.
-        </p>
-
-        <a href="/admin/">Acceder al área administrativa</a>
+    <section class="container" id="proyectos">
+      <div class="section-heading">
+        <div class="eyebrow">Laboratorio digital</div>
+        <h2>Proyectos destacados</h2>
+        <p>Espacio para prácticas académicas, prototipos y trabajos de desarrollo.</p>
+      </div>
+      <div class="grid">
+        <article class="card">
+          <div class="symbol" aria-hidden="true">01 /</div>
+          <h3>Cloudflare WAF</h3>
+          <p class="muted">Práctica de protección web, configuración DNS y evaluación de reglas de seguridad.</p>
+          <span class="tag">Ciberseguridad</span><span class="tag">Cloudflare</span>
+        </article>
+        <article class="card">
+          <div class="symbol" aria-hidden="true">02 /</div>
+          <h3>Sistema de gestión médica</h3>
+          <p class="muted">Proyecto académico para organizar consultas, diagnósticos y tratamientos de pacientes.</p>
+          <span class="tag">Software</span><span class="tag">Bases de datos</span>
+        </article>
+      </div>
     </section>
 
-</main>
+    <section class="container" id="seguridad">
+      <div class="security-panel">
+        <div class="eyebrow">Seguridad desde el diseño</div>
+        <h2>Una web más consciente de sus riesgos</h2>
+        <p class="muted">
+          Esta práctica explora cómo Cloudflare puede actuar como proxy,
+          filtrar solicitudes web y aplicar reglas para reducir ciertos
+          riesgos antes de que el tráfico llegue al alojamiento.
+        </p>
+        <p class="muted">
+          Las configuraciones y resultados se documentarán durante las
+          pruebas. No se muestran datos sensibles ni credenciales reales.
+        </p>
+        <a class="button" href="/admin/">Ver panel de demostración ↗</a>
+      </div>
+    </section>
 
-<footer>
-    Proyecto académico — Implementación de Cloudflare WAF
-</footer>
+    <section class="container" id="contacto">
+      <div class="section-heading">
+        <div class="eyebrow">Conectemos</div>
+        <h2>Contacto y colaboración</h2>
+        <p>
+          Este espacio se utilizará para agregar enlaces profesionales
+          y medios de contacto cuando estén listos para publicarse.
+        </p>
+      </div>
+      <div class="card">
+        <h3>DevConRLTech</h3>
+        <p class="muted">
+          Tecnología, aprendizaje continuo y soluciones digitales.
+        </p>
+        <p class="muted">Los enlaces de contacto se incorporarán próximamente.</p>
+      </div>
+    </section>
+  </main>
 
+  <footer>
+    <div class="container footer-content">
+      <span>© 2026 DevConRLTech · Proyecto en evolución</span>
+      <a href="/admin/">Panel de demostración</a>
+    </div>
+  </footer>
 </body>
 </html>
